@@ -1,3 +1,0 @@
-# Reemplaza esta línea por la que te dé Adsterra en tu panel (Websites > ads.txt).
-# Ejemplo del formato que entrega Adsterra:
-# adsterra.com, TU-ID-DE-PUBLISHER, DIRECT
