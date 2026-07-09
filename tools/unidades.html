@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de unidades online gratis | ToolHub</title>
+<meta name="description" content="Convierte longitud, peso, temperatura y volumen gratis. Metros, pies, kilos, libras, Celsius, Fahrenheit y más. Sin registro.">
+<link rel="icon" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800&family=JetBrains+Mono:wght;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ADSTERRA GLOBAL SCRIPT AQUÍ -->
+</head>
+<body>
+<header class="site-header">
+  <a href="../index.html" class="logo"><img src="../assets/logo.svg" alt="ToolHub logo"> Tool<span class="logo-accent">Hub</span></a>
+  <nav class="top-nav"><a href="../index.html#herramientas">Herramientas</a></nav>
+</header>
+
+<main class="tool-wrap">
+  <a href="../index.html" class="back-link">← Volver a herramientas</a>
+  <div class="tool-head">
+    <span class="tool-ico">📐</span>
+    <div>
+      <h1>Conversor de unidades</h1>
+    <p>Longitud, peso, temperatura y volumen.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-banner"><span class="ad-label">Publicidad</span><!-- ADSTERRA BANNER --></div>
+
+  <div class="panel">
+    <div class="field">
+      <label for="cat">Categoría</label>
+      <select id="cat" onchange="fillUnits()"></select>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>De</label>
+        <select id="from" onchange="conv()"></select>
+      </div>
+      <div class="field">
+        <label>A</label>
+        <select id="to" onchange="conv()"></select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="val">Valor</label>
+      <input type="number" id="val" placeholder="1" oninput="conv()">
+    </div>
+    <div id="out"></div>
+  </div>
+
+  <div class="ad-slot ad-box" style="margin-left:auto;margin-right:auto"><span class="ad-label">Publicidad</span><!-- ADSTERRA 300x250 --></div>
+  <div id="rate" class="rate-widget" data-tool="unidades"></div>
+</main>
+
+<footer class="site-footer"><p>ToolHub © 2026</p><nav><a href="../index.html">Inicio</a></nav></footer>
+
+<script>
+// factores hacia unidad base
+const data={
+  'Longitud':{base:'m',u:{'Milímetro (mm)':0.001,'Centímetro (cm)':0.01,'Metro (m)':1,'Kilómetro (km)':1000,'Pulgada (in)':0.0254,'Pie (ft)':0.3048,'Yarda (yd)':0.9144,'Milla (mi)':1609.34}},
+  'Peso':{base:'g',u:{'Miligramo (mg)':0.001,'Gramo (g)':1,'Kilogramo (kg)':1000,'Tonelada (t)':1e6,'Onza (oz)':28.3495,'Libra (lb)':453.592}},
+  'Volumen':{base:'l',u:{'Mililitro (ml)':0.001,'Litro (l)':1,'Galón US (gal)':3.78541,'Taza (cup)':0.236588,'Pinta (pt)':0.473176}},
+  'Temperatura':{base:'special',u:{'Celsius (°C)':'C','Fahrenheit (°F)':'F','Kelvin (K)':'K'}}
+};
+const catSel=document.getElementById('cat');
+Object.keys(data).forEach(k=>{const o=document.createElement('option');o.textContent=k;catSel.appendChild(o);});
+function fillUnits(){
+  const c=catSel.value,units=Object.keys(data[c].u);
+  ['from','to'].forEach((id,idx)=>{
+    const s=document.getElementById(id);s.innerHTML='';
+    units.forEach(u=>{const o=document.createElement('option');o.textContent=u;s.appendChild(o);});
+    s.selectedIndex=idx===1&&units.length>1?1:0;
+  });
+  conv();
+}
+function conv(){
+  const c=catSel.value,v=parseFloat(document.getElementById('val').value);
+  const f=document.getElementById('from').value,t=document.getElementById('to').value;
+  const out=document.getElementById('out');
+  if(isNaN(v)){out.innerHTML='';return;}
+  let res;
+  if(data[c].base==='special'){
+    res=convTemp(v,data[c].u[f],data[c].u[t]);
+  }else{
+    res=v*data[c].u[f]/data[c].u[t];
+  }
+  out.innerHTML=`<div class="result">
+    <span class="result-label">Resultado</span>
+    <div class="result-value">${(+res.toFixed(6))}</div>
+    <p class="result-note">${v} ${f} = ${(+res.toFixed(6))} ${t}</p>
+  </div>`;
+}
+function convTemp(v,from,to){
+  let c;
+  if(from==='C')c=v; else if(from==='F')c=(v-32)*5/9; else c=v-273.15;
+  if(to==='C')return c; if(to==='F')return c*9/5+32; return c+273.15;
+}
+fillUnits();
+</script>
+<script src="../assets/rate.js"></script>
+</body>
+</html>

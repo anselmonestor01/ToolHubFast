@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de porcentajes online | ToolHub</title>
+<meta name="description" content="Calcula porcentajes, descuentos y aumentos gratis. ¿Cuánto es X% de Y? ¿Qué porcentaje representa? Todo al instante.">
+<link rel="icon" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800&family=JetBrains+Mono:wght;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ADSTERRA GLOBAL SCRIPT AQUÍ -->
+</head>
+<body>
+<header class="site-header">
+  <a href="../index.html" class="logo"><img src="../assets/logo.svg" alt="ToolHub logo"> Tool<span class="logo-accent">Hub</span></a>
+  <nav class="top-nav"><a href="../index.html#herramientas">Herramientas</a></nav>
+</header>
+
+<main class="tool-wrap">
+  <a href="../index.html" class="back-link">← Volver a herramientas</a>
+  <div class="tool-head">
+    <span class="tool-ico">%</span>
+    <div>
+      <h1>Calculadora de porcentajes</h1>
+    <p>Tres cálculos comunes, resueltos al instante.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-banner"><span class="ad-label">Publicidad</span><!-- ADSTERRA BANNER --></div>
+
+  <div class="panel">
+    <div class="field">
+      <label>¿Cuánto es <b>X%</b> de un número?</label>
+      <div class="row">
+        <div class="field"><input type="number" id="a1" placeholder="20" oninput="c1()"></div>
+        <div class="field"><input type="number" id="a2" placeholder="150" oninput="c1()"></div>
+      </div>
+      <div id="o1"></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+    <div class="field">
+      <label>¿Qué <b>%</b> es un número de otro?</label>
+      <div class="row">
+        <div class="field"><input type="number" id="b1" placeholder="30" oninput="c2()"></div>
+        <div class="field"><input type="number" id="b2" placeholder="150" oninput="c2()"></div>
+      </div>
+      <div id="o2"></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+    <div class="field">
+      <label>Aumento / descuento de <b>%</b></label>
+      <div class="row">
+        <div class="field"><input type="number" id="d1" placeholder="100" oninput="c3()"></div>
+        <div class="field"><input type="number" id="d2" placeholder="15" oninput="c3()"></div>
+      </div>
+      <div id="o3"></div>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-box" style="margin-left:auto;margin-right:auto"><span class="ad-label">Publicidad</span><!-- ADSTERRA 300x250 --></div>
+  <div id="rate" class="rate-widget" data-tool="porcentaje"></div>
+</main>
+
+<footer class="site-footer"><p>ToolHub © 2026</p><nav><a href="../index.html">Inicio</a></nav></footer>
+
+<script>
+const f=n=>(+n.toFixed(4)).toLocaleString();
+function res(id,label,val,note){document.getElementById(id).innerHTML=`<div class="result"><span class="result-label">${label}</span><div class="result-value">${val}</div>${note?`<p class="result-note">${note}</p>`:''}</div>`;}
+function c1(){const x=parseFloat(a1.value),y=parseFloat(a2.value);if(isNaN(x)||isNaN(y)){o1.innerHTML='';return;}res('o1','Resultado',f(x/100*y),`${x}% de ${y}`);}
+function c2(){const x=parseFloat(b1.value),y=parseFloat(b2.value);if(isNaN(x)||isNaN(y)||y===0){o2.innerHTML='';return;}res('o2','Resultado',f(x/y*100)+'%',`${x} es ${f(x/y*100)}% de ${y}`);}
+function c3(){const x=parseFloat(d1.value),y=parseFloat(d2.value);if(isNaN(x)||isNaN(y)){o3.innerHTML='';return;}res('o3','Con aumento / descuento',`+${f(x*(1+y/100))} · −${f(x*(1-y/100))}`,`${x} ±${y}%`);}
+const [a1,a2,b1,b2,d1,d2]=['a1','a2','b1','b2','d1','d2'].map(i=>document.getElementById(i));
+</script>
+<script src="../assets/rate.js"></script>
+</body>
+</html>

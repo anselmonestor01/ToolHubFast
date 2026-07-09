@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de edad exacta | ToolHub</title>
+<meta name="description" content="Calcula tu edad exacta en años, meses y días a partir de tu fecha de nacimiento. Gratis y sin registro.">
+<link rel="icon" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800&family=JetBrains+Mono:wght;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ADSTERRA GLOBAL SCRIPT AQUÍ -->
+</head>
+<body>
+<header class="site-header">
+  <a href="../index.html" class="logo"><img src="../assets/logo.svg" alt="ToolHub logo"> Tool<span class="logo-accent">Hub</span></a>
+  <nav class="top-nav"><a href="../index.html#herramientas">Herramientas</a></nav>
+</header>
+
+<main class="tool-wrap">
+  <a href="../index.html" class="back-link">← Volver a herramientas</a>
+  <div class="tool-head">
+    <span class="tool-ico">🎂</span>
+    <div>
+      <h1>Calculadora de edad</h1>
+    <p>Tu edad exacta al día de hoy.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-banner"><span class="ad-label">Publicidad</span><!-- ADSTERRA BANNER --></div>
+
+  <div class="panel">
+    <div class="field">
+      <label for="fecha">Fecha de nacimiento</label>
+      <input type="date" id="fecha">
+    </div>
+    <button class="btn" onclick="calc()">Calcular edad</button>
+    <div id="out"></div>
+  </div>
+
+  <div class="ad-slot ad-box" style="margin-left:auto;margin-right:auto"><span class="ad-label">Publicidad</span><!-- ADSTERRA 300x250 --></div>
+  <div id="rate" class="rate-widget" data-tool="edad"></div>
+</main>
+
+<footer class="site-footer"><p>ToolHub © 2026</p><nav><a href="../index.html">Inicio</a></nav></footer>
+
+<script>
+function calc(){
+  const v=document.getElementById('fecha').value;
+  const out=document.getElementById('out');
+  if(!v){out.innerHTML='<div class="result"><p class="result-note">Selecciona una fecha.</p></div>';return;}
+  const b=new Date(v),n=new Date();
+  if(b>n){out.innerHTML='<div class="result"><p class="result-note">La fecha no puede ser futura.</p></div>';return;}
+  let y=n.getFullYear()-b.getFullYear();
+  let m=n.getMonth()-b.getMonth();
+  let d=n.getDate()-b.getDate();
+  if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate();}
+  if(m<0){y--;m+=12;}
+  const totalDays=Math.floor((n-b)/864e5);
+  out.innerHTML=`<div class="result">
+    <span class="result-label">Tu edad</span>
+    <div class="result-value">${y} años</div>
+    <p class="result-note">${m} meses y ${d} días</p>
+  </div>
+  <div class="stat-grid">
+    <div class="stat"><div class="n">${totalDays.toLocaleString()}</div><div class="l">Días vividos</div></div>
+    <div class="stat"><div class="n">${(totalDays*24).toLocaleString()}</div><div class="l">Horas</div></div>
+    <div class="stat"><div class="n">${Math.floor(totalDays/7).toLocaleString()}</div><div class="l">Semanas</div></div>
+  </div>`;
+}
+</script>
+<script src="../assets/rate.js"></script>
+</body>
+</html>

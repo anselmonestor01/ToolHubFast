@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de IMC online gratis | ToolHub</title>
+<meta name="description" content="Calcula tu Índice de Masa Corporal (IMC) gratis. Introduce peso y altura y conoce si estás en tu peso ideal. Sin registro.">
+<link rel="icon" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800&family=JetBrains+Mono:wght;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ADSTERRA GLOBAL SCRIPT AQUÍ -->
+</head>
+<body>
+<header class="site-header">
+  <a href="../index.html" class="logo"><img src="../assets/logo.svg" alt="ToolHub logo"> Tool<span class="logo-accent">Hub</span></a>
+  <nav class="top-nav"><a href="../index.html#herramientas">Herramientas</a></nav>
+</header>
+
+<main class="tool-wrap">
+  <a href="../index.html" class="back-link">← Volver a herramientas</a>
+  <div class="tool-head">
+    <span class="tool-ico">⚖️</span>
+    <div>
+      <h1>Calculadora de IMC</h1>
+    <p>Descubre tu Índice de Masa Corporal en segundos.</p>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-slot ad-banner"><span class="ad-label">Publicidad</span><!-- ADSTERRA BANNER --></div>
+
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="peso">Peso (kg)</label>
+        <input type="number" id="peso" placeholder="70" min="1" step="0.1">
+      </div>
+      <div class="field">
+        <label for="altura">Altura (cm)</label>
+        <input type="number" id="altura" placeholder="175" min="1">
+      </div>
+    </div>
+    <button class="btn" onclick="calc()">Calcular IMC</button>
+    <div id="out"></div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-slot ad-box" style="margin-left:auto;margin-right:auto"><span class="ad-label">Publicidad</span><!-- ADSTERRA 300x250 --></div>
+  <div id="rate" class="rate-widget" data-tool="imc"></div>
+</main>
+
+<footer class="site-footer"><p>ToolHub © 2026</p><nav><a href="../index.html">Inicio</a></nav></footer>
+
+<script>
+function calc(){
+  const p=parseFloat(document.getElementById('peso').value);
+  const a=parseFloat(document.getElementById('altura').value)/100;
+  const out=document.getElementById('out');
+  if(!p||!a){out.innerHTML='<div class="result"><p class="result-note">Introduce peso y altura válidos.</p></div>';return;}
+  const imc=p/(a*a);
+  let cat,color;
+  if(imc<18.5){cat='Bajo peso';color='#60a5fa';}
+  else if(imc<25){cat='Peso normal';color='#34d399';}
+  else if(imc<30){cat='Sobrepeso';color='#fbbf24';}
+  else{cat='Obesidad';color='#f87171';}
+  out.innerHTML=`<div class="result" style="border-left-color:${color}">
+    <span class="result-label">Tu IMC</span>
+    <div class="result-value" style="color:${color}">${imc.toFixed(1)}</div>
+    <p class="result-note"><strong style="color:${color}">${cat}</strong> · Rango saludable: 18.5 – 24.9</p>
+  </div>`;
+}
+</script>
+<script src="../assets/rate.js"></script>
+</body>
+</html>
