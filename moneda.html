@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de moneda con tasas del día | ToolHub</title>
+<meta name="description" content="Convierte entre monedas con tasas de cambio actualizadas. Dólar, euro, peso, libra y más de 160 monedas. Gratis y sin registro.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💱</text></svg>">
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ADSTERRA GLOBAL SCRIPT AQUÍ -->
+</head>
+<body>
+<header class="site-header">
+  <a href="../index.html" class="logo"><span class="logo-mark">▚</span> Tool<span class="logo-accent">Hub</span></a>
+  <nav class="top-nav"><a href="../index.html#herramientas">Herramientas</a></nav>
+</header>
+
+<main class="tool-wrap">
+  <a href="../index.html" class="back-link">← Todas las herramientas</a>
+  <div class="tool-head">
+    <span class="tool-ico">💱</span>
+    <h1>Conversor de moneda</h1>
+    <p>Tasas de cambio actualizadas cada día.</p>
+  </div>
+
+  <div class="ad-slot ad-banner"><span class="ad-label">Publicidad</span><!-- ADSTERRA BANNER --></div>
+
+  <div class="panel">
+    <div class="field">
+      <label for="amount">Cantidad</label>
+      <input type="number" id="amount" value="1" oninput="conv()">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>De</label>
+        <select id="from" onchange="conv()"></select>
+      </div>
+      <div class="field">
+        <label>A</label>
+        <select id="to" onchange="conv()"></select>
+      </div>
+    </div>
+    <div id="out"></div>
+  </div>
+
+  <div class="ad-slot ad-box" style="margin-left:auto;margin-right:auto"><span class="ad-label">Publicidad</span><!-- ADSTERRA 300x250 --></div>
+</main>
+
+<footer class="site-footer"><p>ToolHub © 2026 · Tasas por open.er-api.com</p><nav><a href="../index.html">Inicio</a></nav></footer>
+
+<script>
+const populares=['USD','EUR','COP','MXN','ARS','GBP','JPY','BRL','CLP','PEN','CAD','CNY','CHF','AUD'];
+let rates={},base='USD';
+const fromSel=document.getElementById('from'),toSel=document.getElementById('to');
+
+async function load(b){
+  const out=document.getElementById('out');
+  out.innerHTML='<div class="result"><p class="result-note">Cargando tasas...</p></div>';
+  try{
+    const r=await fetch('https://open.er-api.com/v6/latest/'+b);
+    const d=await r.json();
+    if(d.result!=='success') throw 0;
+    rates=d.rates;base=b;
+    conv();
+  }catch(e){
+    out.innerHTML='<div class="result" style="border-left-color:#f87171"><p class="result-note">No se pudieron cargar las tasas. Revisa tu conexión e intenta de nuevo.</p></div>';
+  }
+}
+function fillSelects(){
+  const all=Object.keys(rates).length?Object.keys(rates):populares;
+  const list=[...new Set([...populares,...all])];
+  [fromSel,toSel].forEach(s=>{s.innerHTML='';list.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o);});});
+  fromSel.value='USD';toSel.value='COP';
+}
+function conv(){
+  const amt=parseFloat(document.getElementById('amount').value);
+  const f=fromSel.value,t=toSel.value,out=document.getElementById('out');
+  if(base!==f){load(f);return;}
+  if(isNaN(amt)||!rates[t]){out.innerHTML='';return;}
+  const res=amt*rates[t];
+  out.innerHTML=`<div class="result">
+    <span class="result-label">Resultado</span>
+    <div class="result-value">${res.toLocaleString(undefined,{maximumFractionDigits:4})} ${t}</div>
+    <p class="result-note">${amt.toLocaleString()} ${f} · 1 ${f} = ${rates[t].toLocaleString(undefined,{maximumFractionDigits:4})} ${t}</p>
+  </div>`;
+}
+fillSelects();
+load('USD');
+</script>
+</body>
+</html>
